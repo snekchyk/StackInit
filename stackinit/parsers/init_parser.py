@@ -13,4 +13,4 @@ class InitParser():
 
 
     def check(self):
-        pass
+        print("debugger")
