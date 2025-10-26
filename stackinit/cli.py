@@ -7,16 +7,16 @@ app = typer.Typer()
 def init(
     project_name: str,
     is_new: bool = typer.Option(False, "--new", "-n"),
-    template: str = typer.Option("unknown", "--template", "-t"), 
+    type: str = typer.Option("unknown", "--type", "-t"), 
     pkgmgr: str = typer.Option("unknown", "--pkgmgr", "-p")
 ):
     
     # cli.py init -> init_parser.py 
     # #project_name 
-    # #is_new #template 
+    # #is_new #type 
     # #pkgmgr
     
-    parser = InitParser(project_name=project_name, is_new=is_new, template=template, pkgmgr=pkgmgr)
+    parser = InitParser(project_name=project_name, is_new=is_new, type=type, pkgmgr=pkgmgr)
     parser.run()
 
 @app.command()

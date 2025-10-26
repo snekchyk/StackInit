@@ -1,5 +1,5 @@
 {
-  "templates": {
+  "types": {
     "python-basic": {
       "default_pkgmgr": "pip",
       "available_pkgmgr": ["pip", "conda", "poetry", "pipx", "pipenv", "pdm"]
