@@ -16,43 +16,31 @@ class InitParser():
     def run(self):
         self.check()
 
-
+    def show_info(self):
+        print(f"\n{"" if not self.is_new else "New "}{"Project" if not self.is_new else "project"} [bold]{self.project_name}[/bold] will create with\ntype: [bold]{self.type}[/bold],\npackage manager: [bold]{self.pkgmgr}[/bold]\n")
+        
     def check(self):
         with open(self.data_path, 'r', encoding='utf-8') as file:
             content = json.load(file)
-        
+
         types = content.get("types")
-
-
         if self.type not in types:
-            print("There isn`t the same type")
-        else:
-            package_manager = types.get(self.type)
-            if self.pkgmgr == "unknown":
-                if self.is_new:
-                    if os.path.exists(self.project_name):
-                        print(f"[red]Directory[/red] [bold red]{self.project_name}[/bold red] [red]is already exists[/red]")
-                    else:
-                        print(f"\n{"" if not self.is_new else "New "}{"Project" if not self.is_new else "project"} [bold]{self.project_name}[/bold] will create with\ntype: [bold]{self.type}[/bold],\npackage manager: [bold]{self.pkgmgr}[/bold]\n")
-                
-                        self.run_exec()
-                else:
-                    print(f"\n{"" if not self.is_new else "New "}{"Project" if not self.is_new else "project"} [bold]{self.project_name}[/bold] will create with\ntype: [bold]{self.type}[/bold],\npackage manager: [bold]{self.pkgmgr}[/bold]\n")
+            return print("[red]Error:[/red] [bold red]Project type[/bold red] is not available.")
 
-                    self.run_exec()
-            else:
-                if self.pkgmgr not in package_manager["available_pkgmgr"]:
-                    print("There isn`t the same package manager")
-                else:
-                    if self.is_new:
-                        if os.path.exists(self.project_name):
-                            print(f"[red]Directory[/red] [bold red]{self.project_name}[/bold red] [red]is already exists[/red]")
-                        else:
-                            print(f"\n{"" if not self.is_new else "New "}{"Project" if not self.is_new else "project"} [bold]{self.project_name}[/bold] will create with\ntype: [bold]{self.type}[/bold],\npackage manager: [bold]{self.pkgmgr}[/bold]\n")
-                            self.run_exec()
-                    else:
-                        print(f"\n{"" if not self.is_new else "New "}{"Project" if not self.is_new else "project"} [bold]{self.project_name}[/bold] will create with\ntype: [bold]{self.type}[/bold],\npackage manager: [bold]{self.pkgmgr}[/bold]\n")
-                        self.run_exec()
+        package_info = types[self.type]
+        available_pkgmgr = package_info["available_pkgmgr"]
+
+        if self.pkgmgr == "unknown":
+            self.pkgmgr = package_info["default_pkgmgr"]
+
+        if self.pkgmgr not in available_pkgmgr:
+            return print("[red]Error:[/red] [bold red]Package manager[/bold red] is not available for this project type.")
+
+        if self.is_new and os.path.exists(self.project_name):
+            return print(f"[red]Error:[/red] [bold red]Directory {self.project_name}[/bold red] already exists!")
+
+        self.show_info()
+        self.run_exec()
 
 
     def run_exec(self):

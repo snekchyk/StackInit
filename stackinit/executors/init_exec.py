@@ -30,12 +30,8 @@ class InitExec():
                 "type": f"{self.type}",
                 "pkgmgr": f"{self.pkgmgr}"
             },
-            "dependencies": {
-
-            },
-            "devDependencies": {
-                
-            }
+            "dependencies": [],
+            "devDependencies": []
         }
 
         with open('stackinit.json', 'w', encoding='utf-8') as file:

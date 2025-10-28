@@ -1,5 +1,6 @@
 import typer
 from .parsers import InitParser
+from .parsers import AddParser
 
 app = typer.Typer()
 
@@ -11,17 +12,29 @@ def init(
     pkgmgr: str = typer.Option("unknown", "--pkgmgr", "-p")
 ):
     
-    # cli.py init -> init_parser.py 
-    # #project_name 
-    # #is_new #type 
-    # #pkgmgr
+    #cli.py init -> init_parser.py 
+    #project_name 
+    #is_new 
+    #type 
+    #pkgmgr
     
     parser = InitParser(project_name=project_name, is_new=is_new, type=type, pkgmgr=pkgmgr)
     parser.run()
 
 @app.command()
-def add():
-    pass
+def add(
+    deps: str = typer.Option("", "--deps", "-d"),
+    devdeps: str = typer.Option("", "--devdeps", "-dp"),
+    scripts: str = typer.Option("", "--scripts", "-s")
+):
+    
+    #cli.py -> add_parser.py
+    #deps
+    #devdeps
+    #scripts
+    
+    parser = AddParser(deps=deps, devdeps=devdeps)
+    parser.run()
 
 @app.command()
 def list():
