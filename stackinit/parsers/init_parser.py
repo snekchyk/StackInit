@@ -22,22 +22,23 @@ class InitParser():
     def check(self):
         with open(self.data_path, 'r', encoding='utf-8') as file:
             content = json.load(file)
+            
+            
+        # types = content.get("types")
+        # if self.type not in types:
+        #     return print("[red]Error:[/red] [bold red]Project type[/bold red] is not available.")
 
-        types = content.get("types")
-        if self.type not in types:
-            return print("[red]Error:[/red] [bold red]Project type[/bold red] is not available.")
+        # package_info = types[self.type]
+        # available_pkgmgr = package_info["available_pkgmgr"]
 
-        package_info = types[self.type]
-        available_pkgmgr = package_info["available_pkgmgr"]
+        # if self.pkgmgr == "unknown":
+        #     self.pkgmgr = package_info["default_pkgmgr"]
 
-        if self.pkgmgr == "unknown":
-            self.pkgmgr = package_info["default_pkgmgr"]
+        # if self.pkgmgr not in available_pkgmgr:
+        #     return print("[red]Error:[/red] [bold red]Package manager[/bold red] is not available for this project type.")
 
-        if self.pkgmgr not in available_pkgmgr:
-            return print("[red]Error:[/red] [bold red]Package manager[/bold red] is not available for this project type.")
-
-        if self.is_new and os.path.exists(self.project_name):
-            return print(f"[red]Error:[/red] [bold red]Directory {self.project_name}[/bold red] already exists!")
+        # if self.is_new and os.path.exists(self.project_name):
+        #     return print(f"[red]Error:[/red] [bold red]Directory {self.project_name}[/bold red] already exists!")
 
         self.show_info()
         self.run_exec()

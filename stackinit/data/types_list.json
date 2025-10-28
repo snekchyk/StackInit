@@ -1,4 +1,5 @@
 {
+
   "types": {
     "python-basic": {
       "default_pkgmgr": "pip",
@@ -8,5 +9,12 @@
       "default_pkgmgr": "poetry",
       "available_pkgmgr": ["pip", "conda", "poetry", "pipx", "pipenv", "pdm"]
     }
+  },
+
+  "languages": {
+    "python": {
+      "types": ["python-basic", "python-project"]
+    }
   }
+  
 }
