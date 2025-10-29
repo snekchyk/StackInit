@@ -23,26 +23,25 @@ class InitParser():
         with open(self.data_path, 'r', encoding='utf-8') as file:
             content = json.load(file)
             
-            
-        # types = content.get("types")
-        # if self.type not in types:
-        #     return print("[red]Error:[/red] [bold red]Project type[/bold red] is not available.")
-
-        # package_info = types[self.type]
-        # available_pkgmgr = package_info["available_pkgmgr"]
-
-        # if self.pkgmgr == "unknown":
-        #     self.pkgmgr = package_info["default_pkgmgr"]
-
-        # if self.pkgmgr not in available_pkgmgr:
-        #     return print("[red]Error:[/red] [bold red]Package manager[/bold red] is not available for this project type.")
-
-        # if self.is_new and os.path.exists(self.project_name):
-        #     return print(f"[red]Error:[/red] [bold red]Directory {self.project_name}[/bold red] already exists!")
-
+        langeuage = self.type.split("-")[0]
+        type = self.type.split("-")[1]
+        if langeuage not in content["languages"] or type not in content["languages"][langeuage]["types"]:
+            return print("[red]Error:[/red] [bold red]Project type[/bold red] is not available.")
+        
+        package_info = content["languages"][langeuage]["types"][type]
+        available_pkgmgr = package_info["available_pkgmgr"]
+        
+        if self.pkgmgr == "unknown":
+            self.pkgmgr = package_info["default_pkgmgr"]
+        
+        if self.pkgmgr not in available_pkgmgr:
+            return print("[red]Error:[/red] [bold red]Package manager[/bold red] is not available for this project type.")
+        
+        if self.is_new and os.path.exists(self.project_name):
+            return print(f"[red]Error:[/red] [bold red]Directory {self.project_name}[/bold red] already exists!")
+        
         self.show_info()
         self.run_exec()
-
 
     def run_exec(self):
         exec = InitExec(self.project_name, self.is_new, self.type, self.pkgmgr)

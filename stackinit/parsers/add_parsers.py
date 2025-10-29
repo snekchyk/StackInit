@@ -43,12 +43,18 @@ class AddParser():
                 print("[yellow]Warning:[/yellow] Dev dependency already exists in stackinit.json.")
                 return
         
-        print(self.deps)
+        if self.deps == ['']:
+            self.deps = []
+            print(self.deps)
+            exec = AddExec(self.deps, self.devdeps)
+            exec.run()
+            return
+        
+        if self.devdeps == ['']:
+            self.devdeps = []
+        
         if self.is_package_available(self.deps):
             exec = AddExec(self.deps, self.devdeps)
             exec.run()
         else:
-            print("[red]Error1:[/red] [bold red]One or more packages[/bold red] are not available in the package registry.")            
-        
-
-        
+            print("[red]Error:[/red] [bold red]One or more packages[/bold red] are not available in the package registry.")                    

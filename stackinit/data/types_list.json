@@ -1,20 +1,16 @@
 {
-
-  "types": {
-    "python-basic": {
-      "default_pkgmgr": "pip",
-      "available_pkgmgr": ["pip", "conda", "poetry", "pipx", "pipenv", "pdm"]
-    },
-    "python-project": {
-      "default_pkgmgr": "poetry",
-      "available_pkgmgr": ["pip", "conda", "poetry", "pipx", "pipenv", "pdm"]
-    }
-  },
-
   "languages": {
     "python": {
-      "types": ["python-basic", "python-project"]
+      "types": {
+        "basic": {
+          "default_pkgmgr": "pip",
+          "available_pkgmgr": ["pip", "conda", "poetry", "pipx", "pipenv", "pdm"]
+        },
+        "project": {
+          "default_pkgmgr": "poetry",
+          "available_pkgmgr": ["pip", "conda", "poetry", "pipx", "pipenv", "pdm"]
+        }
+      }
     }
   }
-  
 }

@@ -20,7 +20,9 @@ class AddExec():
         devdeps = content.get('devDependencies', []) + self.devdeps
         
         content['dependencies'] = deps
-        if self.devdeps:
+        if self.devdeps == ['']:
+            pass
+        else:
             content['devDependencies'] = devdeps
         
         with open('stackinit.json', 'w') as f:
