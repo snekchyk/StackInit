@@ -11,7 +11,7 @@ class AddParser():
 
     def run(self):
         self.check()
-        
+
     def is_package_available(self, package_name):
         print(package_name)
         for pkg in package_name:
@@ -19,7 +19,7 @@ class AddParser():
             if response.status_code != 200:
                 return False
         return True
-            
+
     def check(self):
         if not os.path.exists('stackinit.json'):
             print("[red]Error:[/red] [bold red]stackinit.json[/bold red] file not found in the current directory.")
@@ -27,6 +27,17 @@ class AddParser():
         
         with open('stackinit.json', 'r') as f:
             content = json.load(f)
+        
+        pkgmgr = content.get('settings', {}).get('pkgmgr', '')
+        type = content.get('settings', {}).get('type', '')
+        
+        if pkgmgr == "unknown":
+            print("[red]Error:[/red] [bold red]Package manager[/bold red] is not specified in stackinit.json.")
+            return
+        if type == "unknown":
+            print("[red]Error:[/red] [bold red]Project type[/bold red] is not specified in stackinit.json.")
+            return
+        
         
         deps = content.get('dependencies', [])
         devdeps = content.get('devDependencies', [])
@@ -37,24 +48,33 @@ class AddParser():
             if el in deps:
                 print("[yellow]Warning:[/yellow] Dependency already exists in stackinit.json.")
                 return
+            elif el in devdeps:
+                print("[yellow]Warning:[/yellow] Dependency already exists as a dev dependency in stackinit.json.")
+                return
             
         for el in self.devdeps:
             if el in devdeps:
                 print("[yellow]Warning:[/yellow] Dev dependency already exists in stackinit.json.")
                 return
+            elif el in deps:
+                print("[yellow]Warning:[/yellow] Dev dependency already exists as a regular dependency in stackinit.json.")
+                return
+        
         
         if self.deps == ['']:
             self.deps = []
-            print(self.deps)
-            exec = AddExec(self.deps, self.devdeps)
-            exec.run()
-            return
         
         if self.devdeps == ['']:
             self.devdeps = []
+            
+        packages = self.deps + self.devdeps
         
-        if self.is_package_available(self.deps):
+        if not packages:
+            print("[red]Error:[/red] [bold red]No packages[/bol red] specified to add.")
+            return
+        
+        if  self.is_package_available(packages):
             exec = AddExec(self.deps, self.devdeps)
             exec.run()
         else:
-            print("[red]Error:[/red] [bold red]One or more packages[/bold red] are not available in the package registry.")                    
+            print("[red]Error:[/red] [bold red]One or more packages[/bold red] are not available in the package registry.")

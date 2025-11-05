@@ -9,6 +9,14 @@ class InitParser():
         self.is_new = is_new
         self.type = type
         self.pkgmgr = pkgmgr
+        
+        if os.path.exists('stackinit.json'):
+            with open('stackinit.json', 'r') as file:
+                content = json.load(file)
+        try:
+            self.pkgmgr = content.get('settings', {}).get('pkgmgr', '') if self.pkgmgr == "unknown" else self.pkgmgr
+        except:
+            pass
 
         self.data_path = os.path.join(os.path.dirname(__file__), "..", "data", "types_list.json")
 
@@ -22,27 +30,36 @@ class InitParser():
     def check(self):
         with open(self.data_path, 'r', encoding='utf-8') as file:
             content = json.load(file)
-            
+        
         langeuage = self.type.split("-")[0]
-        type = self.type.split("-")[1]
+        
+        if self.type == "unknown":
+            self.show_info()
+            exec = InitExec(self.project_name, self.is_new, self.type, self.pkgmgr)
+            exec.run()
+            return
+        else:
+            type = self.type.split("-")[1]
+                    
         if langeuage not in content["languages"] or type not in content["languages"][langeuage]["types"]:
             return print("[red]Error:[/red] [bold red]Project type[/bold red] is not available.")
-        
+                
         package_info = content["languages"][langeuage]["types"][type]
         available_pkgmgr = package_info["available_pkgmgr"]
         
         if self.pkgmgr == "unknown":
             self.pkgmgr = package_info["default_pkgmgr"]
-        
+                
         if self.pkgmgr not in available_pkgmgr:
             return print("[red]Error:[/red] [bold red]Package manager[/bold red] is not available for this project type.")
         
         if self.is_new and os.path.exists(self.project_name):
             return print(f"[red]Error:[/red] [bold red]Directory {self.project_name}[/bold red] already exists!")
-        
+                
         self.show_info()
         self.run_exec()
 
     def run_exec(self):
+        print(self.project_name, self.is_new, self.type, self.pkgmgr)
         exec = InitExec(self.project_name, self.is_new, self.type, self.pkgmgr)
         exec.run()
